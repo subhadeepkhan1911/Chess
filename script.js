@@ -465,10 +465,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     
         if (player1Pieces === 0) {
-            showWinModal("Player 2 wins!!")
+            showWinModal("Player 1 wins!!")
             return 2; // Player 2 wins
         } else if (player2Pieces === 0) {
-            showWinModal("Player 1 wins!!")
+            showWinModal("Player 2 wins!!")
             return 1; // Player 1 wins
         }
     
