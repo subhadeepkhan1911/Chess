@@ -82,15 +82,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    quitButton.addEventListener('click', () => {
-        const winner = currentPlayer === 1 ? 2 : 1;
-        alert(`Player ${winner} wins!`);
-        setTimeout(() => {
-            location.reload(); // Refresh the page
-        }, 100); // Delay to ensure the alert is closed before reloading
-    });
-
-
 
     function handleSquareClick(square) {
         if (selectedPiece) {
@@ -145,23 +136,54 @@ document.addEventListener("DOMContentLoaded", () => {
     /* PROMOTION FNC */
 
     function promotePawn(row, col) {
-        // Create a modal or prompt for user selection
-        const choices = ['rook', 'knight', 'bishop', 'queen', 'king'];
-        const selectedPiece = prompt("Choose a piece for promotion: rook, knight, bishop, queen, king");
-    
-        if (!choices.includes(selectedPiece)) {
-            alert("Invalid choice, promoting to queen by default.");
-            selectedPiece = 'queen';
+        const modal = document.getElementById('promotion-modal');
+        const closeModal = document.getElementById('close-modal');
+        const promotionChoices = document.getElementById('promotion-choices');
+        
+        // Display the modal
+        modal.style.display = 'block';
+        
+        // Close the modal when the user clicks on <span> (x)
+        closeModal.onclick = function() {
+            modal.style.display = 'none';
+            // If modal is closed without selection, promote to queen by default
+            selectPiece('queen');
         }
-    
-        // Remove the pawn from the board
-        boardElement.querySelector(`[data-row='${row}'][data-col='${col}']`).removeChild(boardElement.querySelector(`[data-row='${row}'][data-col='${col}']`).firstChild);
-    
-        // Create the new piece
-        createPiece(currentPlayer, row, col, selectedPiece);
-    
-        // Update the board state
-        board[row][col].type = selectedPiece;
+        
+        // Close the modal when the user clicks anywhere outside of the modal
+        window.onclick = function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+                // If modal is closed without selection, promote to queen by default
+                selectPiece('queen');
+            }
+        }
+        
+        // Handle piece selection
+        promotionChoices.onclick = function(event) {
+            if (event.target.classList.contains('promotion-icon')) {
+                const selectedPiece = event.target.dataset.piece;
+                modal.style.display = 'none';
+                selectPiece(selectedPiece);
+            }
+        }
+        
+        function selectPiece(selectedPiece) {
+            // Remove the pawn from the board
+            const square = boardElement.querySelector(`[data-row='${row}'][data-col='${col}']`);
+            square.removeChild(square.firstChild);
+        
+            // Create the new piece
+            if(currentPlayer === 1  )
+                createPiece(2, row, col, selectedPiece);
+            // currentPlayer = 2;
+            else 
+                createPiece(1, row, col, selectedPiece);
+            // currentPlayer = 1;
+        
+            // Update the board state
+            board[row][col].type = selectedPiece;
+        }
     }
     
       /* PROMOTION FNC */
@@ -443,8 +465,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     
         if (player1Pieces === 0) {
+            showWinModal("Player 2 wins!!")
             return 2; // Player 2 wins
         } else if (player2Pieces === 0) {
+            showWinModal("Player 1 wins!!")
             return 1; // Player 1 wins
         }
     
@@ -460,10 +484,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     quitButton.addEventListener('click', () => {
         const winner = currentPlayer === 1 ? 2 : 1;
-        alert(`Player ${winner} wins!`);
-        setTimeout(() => {
-            location.reload(); // Refresh the page
-        }, 100); // Delay to ensure the alert is closed before reloading
+        showWinModal(`Player ${winner} wins!`);
     });
     
 
@@ -482,6 +503,34 @@ function resetGame() {
     // Update move history display
     updateMoveHistory();
 }
+function showWinModal(message) {
+    const winModal = document.getElementById('win-modal');
+    const winMessage = document.getElementById('win-message');
+    const winCloseModal = document.getElementById('win-close-modal');
+    
+    // Set the win message
+    winMessage.textContent = message;
+    
+    // Display the modal
+    winModal.style.display = 'block';
+    
+    // Close the modal when the user clicks on <span> (x)
+    winCloseModal.onclick = function() {
+        winModal.style.display = 'none';
+        location.reload();
+    }
+    
+    // Close the modal when the user clicks anywhere outside of the modal
+    window.onclick = function(event) {
+        if (event.target === winModal) {
+            winModal.style.display = 'none';
+            location.reload();
+        }
+    }
+}
 
     resetGame();
 });
+
+
+

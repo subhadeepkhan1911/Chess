@@ -25,6 +25,27 @@
             <div id="turn">Player 1's turn</div>
             <div id="message"></div>
         </div>
+        <div id="promotion-modal" class="modal">
+            <div class="modal-content">
+                <span id="close-modal" class="close">&times;</span>
+                <h2>Choose a piece for promotion</h2>
+                <div id="promotion-choices">
+                    <img src="assets/1-rook.png" data-piece="rook" class="promotion-icon">
+                    <img src="assets/1-knight.png" data-piece="knight" class="promotion-icon">
+                    <img src="assets/1-bishop.png" data-piece="bishop" class="promotion-icon">
+                    <img src="assets/1-queen.png" data-piece="queen" class="promotion-icon">
+                    <img src="assets/1-king.png" data-piece="king" class="promotion-icon">
+                </div>
+            </div>
+        </div>
+        <div id="win-modal" class="modal">
+            <div class="modal-content">
+                <span id="win-close-modal" class="close">&times;</span>
+                <h2 id="win-message"></h2>
+            </div>
+        </div>
+        
+        
     </div>
     <script src="script.js"></script>
 </body>
